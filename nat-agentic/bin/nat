@@ -236,4 +236,4 @@ export NAT_AGENTIC_VERSION
 export CLAUDE_SETTINGS_PATH="$NAT_AGENTIC_CONFIG/settings.json"
 
 # Execute Claude Code with custom settings
-exec claude --settings-path "$CLAUDE_SETTINGS_PATH" "${NAT_PASS_ARGS[@]}"
+exec claude --settings "$CLAUDE_SETTINGS_PATH" "${NAT_PASS_ARGS[@]}"
