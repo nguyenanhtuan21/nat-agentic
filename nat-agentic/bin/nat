@@ -81,6 +81,9 @@ nat_init_marketplace() {
     local bundled_marketplace="$(dirname "$0")/../marketplace"
 
     if [[ -d "$bundled_marketplace/plugins" ]]; then
+        # Ensure plugins directory exists
+        mkdir -p "$NAT_AGENTIC_MARKETPLACE/plugins"
+
         for plugin_dir in "$bundled_marketplace/plugins"/*/; do
             if [[ -d "$plugin_dir" ]]; then
                 local plugin_name=$(basename "$plugin_dir")
