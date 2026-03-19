@@ -1,0 +1,12 @@
+{
+  "name": "nat-core",
+  "version": "1.0.0",
+  "description": "Core branding, version info, and configuration management for Nat Agentic",
+  "author": "Nat Agentic Team",
+  "homepage": "https://nat-agentic.dev/plugins/nat-core",
+  "license": "MIT",
+  "keywords": ["core", "branding", "config", "essential"],
+  "category": "core",
+  "priority": 100,
+  "required": true
+}

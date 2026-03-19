@@ -1,0 +1,81 @@
+{
+    "version": "1.0.0",
+    "description": "Custom Claude Code Distribution with Curated Plugins",
+    "homepage": "https://nat-agentic.dev",
+    "license": "MIT",
+    "notes": [
+        "Nat Agentic has been installed!",
+        "",
+        "To get started:",
+        "  1. Run 'nat' to start an interactive session",
+        "  2. Run 'nat --help' to see available options",
+        "  3. Visit https://nat-agentic.dev/docs for documentation",
+        "",
+        "Configuration is stored in ~/.nat-agentic/"
+    ],
+    "suggest": {
+        "Node.js": "nodejs-lts",
+        "Git": "git"
+    },
+    "url": "https://github.com/nat-agentic/nat-agentic/archive/refs/tags/v1.0.0.zip",
+    "hash": "PLACEHOLDER_HASH",
+    "extract_dir": "nat-agentic-1.0.0",
+    "pre_install": [
+        "# Ensure config directory exists",
+        "if (!(Test-Path \"$persist_dir\\config\")) {",
+        "    New-Item -ItemType Directory -Path \"$persist_dir\\config\" -Force | Out-Null",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\marketplace\\plugins\")) {",
+        "    New-Item -ItemType Directory -Path \"$persist_dir\\marketplace\\plugins\" -Force | Out-Null",
+        "}"
+    ],
+    "install": [
+        "# Copy bin files",
+        "Copy-Item \"$dir\\bin\\*\" \"$dir\" -Recurse -Force",
+        "",
+        "# Create shims",
+        "New-Item -ItemType Directory -Path \"$dir\\bin\" -Force | Out-Null",
+        "Move-Item \"$dir\\nat\" \"$dir\\bin\\nat\" -Force",
+        "Move-Item \"$dir\\nat.cmd\" \"$dir\\bin\\nat.cmd\" -Force",
+        "Move-Item \"$dir\\nat-setup\" \"$dir\\bin\\nat-setup\" -Force -ErrorAction SilentlyContinue",
+        "",
+        "# Copy default config if not exists",
+        "if (!(Test-Path \"$persist_dir\\config\\settings.json\")) {",
+        "    Copy-Item \"$dir\\config\\settings-default.json\" \"$persist_dir\\config\\settings.json\" -Force",
+        "}",
+        "",
+        "# Copy plugins",
+        "if (Test-Path \"$dir\\marketplace\\plugins\") {",
+        "    Copy-Item \"$dir\\marketplace\\plugins\\*\" \"$persist_dir\\marketplace\\plugins\" -Recurse -Force",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "# Preserve user configuration",
+            "Write-Host \"Note: Your configuration in ~/.nat-agentic is preserved.\"",
+            "Write-Host \"To remove it completely, run: Remove-Item -Recurse -Force ~/.nat-agentic\""
+        ]
+    },
+    "bin": [
+        "bin/nat.cmd",
+        [
+            "bin/nat.cmd",
+            "nat"
+        ]
+    ],
+    "persist": [
+        "config",
+        "marketplace"
+    ],
+    "env_add_path": "bin",
+    "env_set": {
+        "NAT_AGENTIC_HOME": "$persist_dir"
+    },
+    "checkver": {
+        "github": "https://github.com/nat-agentic/nat-agentic"
+    },
+    "autoupdate": {
+        "url": "https://github.com/nat-agentic/nat-agentic/archive/refs/tags/v$version.zip",
+        "extract_dir": "nat-agentic-$version"
+    }
+}

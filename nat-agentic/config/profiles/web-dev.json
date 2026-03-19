@@ -1,0 +1,47 @@
+{
+  "$schema": "https://claude.ai/schema/settings.json",
+  "version": "1.0.0",
+  "name": "Web Development Profile",
+  "description": "Optimized for frontend and full-stack web development",
+
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(bun *)",
+      "Bash(node *)",
+      "Bash(pnpm *)",
+      "Bash(yarn *)",
+      "Bash(vite *)",
+      "Bash(next *)",
+      "Bash(nuxt *)",
+      "Bash(react-scripts *)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  },
+
+  "marketplace": {
+    "defaultPlugins": [
+      "nat-core",
+      "nat-git-workflow",
+      "nat-security",
+      "nat-code-quality"
+    ]
+  },
+
+  "env": {
+    "NODE_ENV": "development"
+  },
+
+  "shortcuts": {
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "test": "npm test",
+    "lint": "npm run lint"
+  }
+}

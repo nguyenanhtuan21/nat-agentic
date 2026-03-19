@@ -1,0 +1,65 @@
+{
+  "name": "@nat-agentic/cli",
+  "version": "1.0.0",
+  "description": "Nat Agentic - Custom Claude Code Distribution with Curated Plugins",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "cli",
+    "code-assistant",
+    "developer-tools"
+  ],
+  "author": "Nat Agentic Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nat-agentic/nat-agentic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nat-agentic/nat-agentic/issues"
+  },
+  "homepage": "https://nat-agentic.dev",
+  "bin": {
+    "nat": "./bin/nat",
+    "nat-setup": "./bin/nat-setup"
+  },
+  "files": [
+    "bin/",
+    "config/",
+    "marketplace/",
+    "branding/",
+    "scripts/",
+    "VERSION",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "preuninstall": "node scripts/preuninstall.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "peerDependencies": {
+    "@anthropic-ai/claude-code": ">=0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/claude-code": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

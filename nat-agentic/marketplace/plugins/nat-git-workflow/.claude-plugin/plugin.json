@@ -1,0 +1,12 @@
+{
+  "name": "nat-git-workflow",
+  "version": "1.0.0",
+  "description": "Streamlined git commands with validation hooks for commit, push, and PR workflows",
+  "author": "Nat Agentic Team",
+  "homepage": "https://nat-agentic.dev/plugins/nat-git-workflow",
+  "license": "MIT",
+  "keywords": ["git", "commit", "push", "pr", "workflow"],
+  "category": "productivity",
+  "priority": 80,
+  "required": false
+}

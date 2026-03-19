@@ -1,0 +1,46 @@
+{
+  "$schema": "https://claude.ai/schema/settings.json",
+  "version": "1.0.0",
+  "name": "Backend Profile",
+  "description": "Optimized for backend and API development",
+
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(bun *)",
+      "Bash(node *)",
+      "Bash(python *)",
+      "Bash(pip *)",
+      "Bash(poetry *)",
+      "Bash(go *)",
+      "Bash(cargo *)",
+      "Bash(make *)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  },
+
+  "marketplace": {
+    "defaultPlugins": [
+      "nat-core",
+      "nat-git-workflow",
+      "nat-security",
+      "nat-code-quality"
+    ]
+  },
+
+  "env": {
+    "NODE_ENV": "development"
+  },
+
+  "shortcuts": {
+    "start": "npm run start",
+    "test": "npm test",
+    "migrate": "npm run migrate"
+  }
+}

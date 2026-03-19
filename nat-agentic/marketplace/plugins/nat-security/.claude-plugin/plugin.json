@@ -1,0 +1,12 @@
+{
+  "name": "nat-security",
+  "version": "1.0.0",
+  "description": "Security validation hooks to prevent common vulnerabilities like SQL injection, XSS, and secrets exposure",
+  "author": "Nat Agentic Team",
+  "homepage": "https://nat-agentic.dev/plugins/nat-security",
+  "license": "MIT",
+  "keywords": ["security", "validation", "hooks", "xss", "sql-injection"],
+  "category": "security",
+  "priority": 90,
+  "required": false
+}

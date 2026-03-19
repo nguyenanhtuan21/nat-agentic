@@ -1,0 +1,236 @@
+#!/usr/bin/env bash
+#
+# Nat Agentic CLI Wrapper
+# Custom Claude Code Distribution
+#
+# Usage: nat [options] [prompt]
+#
+
+set -e
+
+# Version
+NAT_AGENTIC_VERSION="$(cat "$(dirname "$0")/../VERSION" 2>/dev/null || echo "1.0.0")"
+
+# Default home directory
+NAT_AGENTIC_HOME="${NAT_AGENTIC_HOME:-$HOME/.nat-agentic}"
+NAT_AGENTIC_CONFIG="$NAT_AGENTIC_HOME/config"
+NAT_AGENTIC_MARKETPLACE="$NAT_AGENTIC_HOME/marketplace"
+
+# Banner file
+NAT_BANNER="$(dirname "$0")/../branding/banner.txt"
+
+# Colors
+NAT_COLOR_PRIMARY='\033[38;5;99m'
+NAT_COLOR_SECONDARY='\033[38;5;141m'
+NAT_COLOR_ACCENT='\033[38;5;48m'
+NAT_COLOR_RESET='\033[0m'
+
+# Print colored output
+nat_print() {
+    echo -e "${NAT_COLOR_PRIMARY}[Nat Agentic]${NAT_COLOR_RESET} $1"
+}
+
+nat_print_success() {
+    echo -e "${NAT_COLOR_ACCENT}[Nat Agentic]${NAT_COLOR_RESET} $1"
+}
+
+nat_print_error() {
+    echo -e "\033[31m[Nat Agentic Error]${NAT_COLOR_RESET} $1" >&2
+}
+
+# Show ASCII banner
+nat_show_banner() {
+    if [[ -f "$NAT_BANNER" ]]; then
+        cat "$NAT_BANNER" | sed "s/{VERSION}/$NAT_AGENTIC_VERSION/g"
+        echo ""
+    fi
+}
+
+# Initialize Nat Agentic home directory
+nat_init_home() {
+    if [[ ! -d "$NAT_AGENTIC_HOME" ]]; then
+        nat_print "Initializing Nat Agentic home directory..."
+        mkdir -p "$NAT_AGENTIC_CONFIG"
+        mkdir -p "$NAT_AGENTIC_MARKETPLACE"
+        mkdir -p "$NAT_AGENTIC_HOME/logs"
+    fi
+
+    # Create default settings if not exists
+    if [[ ! -f "$NAT_AGENTIC_CONFIG/settings.json" ]]; then
+        local default_settings="$(dirname "$0")/../config/settings-default.json"
+        if [[ -f "$default_settings" ]]; then
+            cp "$default_settings" "$NAT_AGENTIC_CONFIG/settings.json"
+            nat_print "Created default settings"
+        fi
+    fi
+}
+
+# Check if Claude Code is installed
+nat_check_claude() {
+    if ! command -v claude &> /dev/null; then
+        nat_print_error "Claude Code CLI not found!"
+        nat_print "Please install Claude Code first:"
+        echo "  npm install -g @anthropic-ai/claude-code"
+        echo "  or visit: https://claude.ai/code"
+        exit 1
+    fi
+}
+
+# Copy marketplace plugins to home
+nat_init_marketplace() {
+    local bundled_marketplace="$(dirname "$0")/../marketplace"
+
+    if [[ -d "$bundled_marketplace/plugins" ]]; then
+        for plugin_dir in "$bundled_marketplace/plugins"/*/; do
+            if [[ -d "$plugin_dir" ]]; then
+                local plugin_name=$(basename "$plugin_dir")
+                local target_dir="$NAT_AGENTIC_MARKETPLACE/plugins/$plugin_name"
+
+                if [[ ! -d "$target_dir" ]]; then
+                    nat_print "Installing plugin: $plugin_name"
+                    cp -r "$plugin_dir" "$target_dir"
+                fi
+            fi
+        done
+    fi
+}
+
+# Switch profile
+nat_switch_profile() {
+    local profile="$1"
+    local profile_file="$(dirname "$0")/../config/profiles/${profile}.json"
+
+    if [[ -f "$profile_file" ]]; then
+        cp "$profile_file" "$NAT_AGENTIC_CONFIG/settings.json"
+        nat_print_success "Switched to profile: $profile"
+    else
+        nat_print_error "Profile not found: $profile"
+        nat_print "Available profiles: default, web-dev, backend, minimal"
+        exit 1
+    fi
+}
+
+# Update Nat Agentic
+nat_update() {
+    nat_print "Checking for updates..."
+
+    # Try different update methods
+    if command -v npm &> /dev/null && npm list -g @nat-agentic/cli &> /dev/null; then
+        nat_print "Updating via NPM..."
+        npm update -g @nat-agentic/cli
+    elif command -v brew &> /dev/null && brew list nat-agentic &> /dev/null; then
+        nat_print "Updating via Homebrew..."
+        brew upgrade nat-agentic
+    elif command -v scoop &> /dev/null && scoop list | grep -q nat-agentic; then
+        nat_print "Updating via Scoop..."
+        scoop update nat-agentic
+    else
+        nat_print "Running curl installer for update..."
+        curl -fsSL https://nat-agentic.dev/install.sh | bash
+    fi
+
+    nat_print_success "Update complete!"
+}
+
+# Open configuration
+nat_open_config() {
+    local config_file="$NAT_AGENTIC_CONFIG/settings.json"
+
+    if [[ -f "$config_file" ]]; then
+        if command -v code &> /dev/null; then
+            code "$config_file"
+        elif command -v nano &> /dev/null; then
+            nano "$config_file"
+        elif command -v vim &> /dev/null; then
+            vim "$config_file"
+        else
+            cat "$config_file"
+        fi
+    else
+        nat_print_error "Configuration file not found: $config_file"
+        exit 1
+    fi
+}
+
+# Show help
+nat_show_help() {
+    cat << EOF
+Nat Agentic - Custom Claude Code Distribution v${NAT_AGENTIC_VERSION}
+
+Usage: nat [options] [prompt]
+
+Options:
+  --nat-version       Show Nat Agentic version
+  --nat-update        Update Nat Agentic to latest version
+  --nat-config        Open configuration file
+  --profile <name>    Switch to a profile (web-dev, backend, minimal)
+  --no-banner         Don't show ASCII banner
+  --help              Show this help message
+
+Any other options are passed through to Claude Code CLI.
+
+Examples:
+  nat                          Start interactive session
+  nat "Fix the bug in app.ts"  Run with a prompt
+  nat --profile web-dev        Use web development profile
+  nat --nat-update             Update Nat Agentic
+
+Documentation: https://nat-agentic.dev/docs
+EOF
+}
+
+# Parse arguments
+NAT_SHOW_BANNER=true
+NAT_PASS_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --nat-version)
+            echo "Nat Agentic v${NAT_AGENTIC_VERSION}"
+            echo "Claude Code: $(claude --version 2>/dev/null || echo 'not found')"
+            exit 0
+            ;;
+        --nat-update)
+            nat_update
+            exit 0
+            ;;
+        --nat-config)
+            nat_open_config
+            exit 0
+            ;;
+        --profile)
+            nat_switch_profile "$2"
+            shift 2
+            ;;
+        --no-banner)
+            NAT_SHOW_BANNER=false
+            shift
+            ;;
+        --help|-h)
+            nat_show_help
+            exit 0
+            ;;
+        *)
+            NAT_PASS_ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+
+# Main execution
+nat_check_claude
+nat_init_home
+nat_init_marketplace
+
+# Show banner for interactive sessions
+if [[ "$NAT_SHOW_BANNER" == true ]] && [[ ${#NAT_PASS_ARGS[@]} -eq 0 ]]; then
+    nat_show_banner
+fi
+
+# Set environment variables
+export NAT_AGENTIC_HOME
+export NAT_AGENTIC_VERSION
+export CLAUDE_SETTINGS_PATH="$NAT_AGENTIC_CONFIG/settings.json"
+
+# Execute Claude Code with custom settings
+exec claude --settings-path "$CLAUDE_SETTINGS_PATH" "${NAT_PASS_ARGS[@]}"

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://claude.ai/schema/settings.json",
+  "version": "1.0.0",
+  "name": "Minimal Profile",
+  "description": "Minimal configuration with only essential plugins",
+
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git *)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  },
+
+  "marketplace": {
+    "defaultPlugins": [
+      "nat-core"
+    ]
+  },
+
+  "env": {},
+
+  "shortcuts": {}
+}

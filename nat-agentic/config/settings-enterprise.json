@@ -1,0 +1,75 @@
+{
+  "$schema": "https://claude.ai/schema/settings.json",
+  "version": "1.0.0",
+  "name": "Nat Agentic Enterprise Settings",
+  "description": "Enterprise lockdown configuration for Nat Agentic",
+
+  "permissions": {
+    "allow": [
+      "Read(${WORKSPACE_ROOT}/**)",
+      "Edit(${WORKSPACE_ROOT}/**)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git log)",
+      "Bash(npm run lint)",
+      "Bash(npm test)",
+      "Glob(${WORKSPACE_ROOT}/**)",
+      "Grep(${WORKSPACE_ROOT}/**)"
+    ],
+    "deny": [
+      "Write(**/.env*)",
+      "Write(**/secrets/**)",
+      "Write(**/credentials/**)",
+      "Bash(rm *)",
+      "Bash(sudo *)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(nc *)",
+      "Bash(chmod *)",
+      "Bash(* | *)",
+      "Bash(* && *)",
+      "Bash(* || *)"
+    ]
+  },
+
+  "bashSandbox": {
+    "enabled": true,
+    "allowNetwork": false,
+    "allowedDomains": []
+  },
+
+  "marketplace": {
+    "enabled": true,
+    "path": "${NAT_AGENTIC_HOME}/marketplace",
+    "autoUpdate": false,
+    "allowedPlugins": [
+      "nat-core",
+      "nat-git-workflow",
+      "nat-security",
+      "nat-code-quality"
+    ]
+  },
+
+  "branding": {
+    "name": "Nat Agentic Enterprise",
+    "showBanner": true,
+    "showVersion": false,
+    "colors": {
+      "primary": "#1e40af",
+      "secondary": "#3b82f6",
+      "accent": "#059669"
+    }
+  },
+
+  "profiles": {
+    "current": "enterprise",
+    "available": ["enterprise"]
+  },
+
+  "audit": {
+    "enabled": true,
+    "logPath": "${NAT_AGENTIC_HOME}/logs/audit.log",
+    "logToolCalls": true,
+    "logFileOperations": true
+  }
+}

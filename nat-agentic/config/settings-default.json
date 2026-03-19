@@ -1,0 +1,73 @@
+{
+  "$schema": "https://claude.ai/schema/settings.json",
+  "version": "1.0.0",
+  "name": "Nat Agentic Default Settings",
+  "description": "Default configuration for Nat Agentic distribution",
+
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(bun *)",
+      "Bash(node *)",
+      "Bash(nat *)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(sudo rm *)",
+      "Bash(format *)",
+      "Bash(mkfs *)"
+    ]
+  },
+
+  "bashSandbox": {
+    "enabled": true,
+    "allowNetwork": true,
+    "allowedDomains": [
+      "api.anthropic.com",
+      "github.com",
+      "npmjs.org",
+      "nat-agentic.dev"
+    ]
+  },
+
+  "marketplace": {
+    "enabled": true,
+    "path": "${NAT_AGENTIC_HOME}/marketplace",
+    "autoUpdate": true,
+    "defaultPlugins": [
+      "nat-core",
+      "nat-git-workflow",
+      "nat-security",
+      "nat-code-quality"
+    ]
+  },
+
+  "branding": {
+    "name": "Nat Agentic",
+    "showBanner": true,
+    "showVersion": true,
+    "colors": {
+      "primary": "#6366f1",
+      "secondary": "#8b5cf6",
+      "accent": "#10b981"
+    }
+  },
+
+  "profiles": {
+    "current": "default",
+    "available": ["default", "web-dev", "backend", "minimal"]
+  },
+
+  "hooks": {
+    "enabled": true,
+    "preload": [
+      "${NAT_AGENTIC_HOME}/marketplace/plugins/nat-security/hooks/security-hooks.json"
+    ]
+  }
+}

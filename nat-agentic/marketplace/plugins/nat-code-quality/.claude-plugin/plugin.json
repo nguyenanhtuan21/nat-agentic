@@ -1,0 +1,12 @@
+{
+  "name": "nat-code-quality",
+  "version": "1.0.0",
+  "description": "Code quality commands for linting, testing, and code review with specialized agents",
+  "author": "Nat Agentic Team",
+  "homepage": "https://nat-agentic.dev/plugins/nat-code-quality",
+  "license": "MIT",
+  "keywords": ["lint", "test", "review", "quality", "agent"],
+  "category": "quality",
+  "priority": 70,
+  "required": false
+}

@@ -1,0 +1,85 @@
+{
+  "name": "nat-marketplace",
+  "version": "1.0.0",
+  "description": "Nat Agentic Plugin Marketplace",
+  "plugins": {
+    "nat-core": {
+      "name": "Nat Core",
+      "version": "1.0.0",
+      "description": "Core branding, version info, and configuration management for Nat Agentic",
+      "category": "core",
+      "required": true,
+      "priority": 100,
+      "author": "Nat Agentic Team",
+      "homepage": "https://nat-agentic.dev/plugins/nat-core",
+      "repository": "https://github.com/nat-agentic/nat-agentic",
+      "keywords": ["core", "branding", "config", "essential"],
+      "license": "MIT",
+      "path": "plugins/nat-core"
+    },
+    "nat-git-workflow": {
+      "name": "Nat Git Workflow",
+      "version": "1.0.0",
+      "description": "Streamlined git commands with validation hooks for commit, push, and PR workflows",
+      "category": "productivity",
+      "required": false,
+      "priority": 80,
+      "author": "Nat Agentic Team",
+      "homepage": "https://nat-agentic.dev/plugins/nat-git-workflow",
+      "repository": "https://github.com/nat-agentic/nat-agentic",
+      "keywords": ["git", "commit", "push", "pr", "workflow"],
+      "license": "MIT",
+      "path": "plugins/nat-git-workflow"
+    },
+    "nat-security": {
+      "name": "Nat Security",
+      "version": "1.0.0",
+      "description": "Security validation hooks to prevent common vulnerabilities like SQL injection, XSS, and secrets exposure",
+      "category": "security",
+      "required": false,
+      "priority": 90,
+      "author": "Nat Agentic Team",
+      "homepage": "https://nat-agentic.dev/plugins/nat-security",
+      "repository": "https://github.com/nat-agentic/nat-agentic",
+      "keywords": ["security", "validation", "hooks", "xss", "sql-injection"],
+      "license": "MIT",
+      "path": "plugins/nat-security"
+    },
+    "nat-code-quality": {
+      "name": "Nat Code Quality",
+      "version": "1.0.0",
+      "description": "Code quality commands for linting, testing, and code review with specialized agents",
+      "category": "quality",
+      "required": false,
+      "priority": 70,
+      "author": "Nat Agentic Team",
+      "homepage": "https://nat-agentic.dev/plugins/nat-code-quality",
+      "repository": "https://github.com/nat-agentic/nat-agentic",
+      "keywords": ["lint", "test", "review", "quality", "agent"],
+      "license": "MIT",
+      "path": "plugins/nat-code-quality"
+    }
+  },
+  "categories": [
+    {
+      "id": "core",
+      "name": "Core",
+      "description": "Essential plugins that provide core functionality"
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity",
+      "description": "Plugins that improve development workflow"
+    },
+    {
+      "id": "quality",
+      "name": "Code Quality",
+      "description": "Plugins for code quality, linting, and testing"
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "description": "Plugins for security validation and protection"
+    }
+  ]
+}

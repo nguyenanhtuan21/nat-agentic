@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# Nat Agentic Setup Script
+# Run this after installation to configure your environment
+#
+
+set -e
+
+NAT_AGENTIC_VERSION="$(cat "$(dirname "$0")/../VERSION" 2>/dev/null || echo "1.0.0")"
+NAT_AGENTIC_HOME="${NAT_AGENTIC_HOME:-$HOME/.nat-agentic}"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+NC='\033[0m'
+
+echo -e "${PURPLE}"
+echo "  _   _ _______  ______  _   _ _____    _    _ _   _ _ _   _"
+echo " | \\ | | ____\\ \\/ /  _ \\| \\ | | ____|  / \\  | | \\ | | | \\ | |"
+echo " |  \\| |  _|  \\  /| |_) |  \\| |  _|   / _ \\ | |  \\| | |  \\| |"
+echo " | |\\  | |___ /  \\|  __/| |\\  | |___ / ___ \\| | |\\  | | |\\  |"
+echo " |_| \\_|_____/_/\\_\\_|   |_| \\_|_____/_/   \\_\\_|_| \\_|_|_| \\_|"
+echo ""
+echo -e "${BLUE}Setup Wizard v${NAT_AGENTIC_VERSION}${NC}"
+echo ""
+
+# Check Claude Code
+echo -e "${BLUE}[1/4]${NC} Checking dependencies..."
+if ! command -v claude &> /dev/null; then
+    echo -e "  ${GREEN}✗${NC} Claude Code not found"
+    echo "    Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code
+else
+    echo -e "  ${GREEN}✓${NC} Claude Code: $(claude --version 2>/dev/null || echo 'installed')"
+fi
+
+# Create directories
+echo -e "${BLUE}[2/4]${NC} Creating directories..."
+mkdir -p "$NAT_AGENTIC_HOME/config"
+mkdir -p "$NAT_AGENTIC_HOME/marketplace/plugins"
+mkdir -p "$NAT_AGENTIC_HOME/logs"
+echo -e "  ${GREEN}✓${NC} Created $NAT_AGENTIC_HOME"
+
+# Copy default settings
+echo -e "${BLUE}[3/4]${NC} Configuring settings..."
+SETTINGS_SOURCE="$(dirname "$0")/../config/settings-default.json"
+if [[ -f "$SETTINGS_SOURCE" ]]; then
+    cp "$SETTINGS_SOURCE" "$NAT_AGENTIC_HOME/config/settings.json"
+    echo -e "  ${GREEN}✓${NC} Created default settings"
+fi
+
+# Install plugins
+echo -e "${BLUE}[4/4]${NC} Installing plugins..."
+PLUGINS_SOURCE="$(dirname "$0")/../marketplace/plugins"
+if [[ -d "$PLUGINS_SOURCE" ]]; then
+    for plugin_dir in "$PLUGINS_SOURCE"/*/; do
+        if [[ -d "$plugin_dir" ]]; then
+            plugin_name=$(basename "$plugin_dir")
+            cp -r "$plugin_dir" "$NAT_AGENTIC_HOME/marketplace/plugins/"
+            echo -e "  ${GREEN}✓${NC} Installed: $plugin_name"
+        fi
+    done
+fi
+
+echo ""
+echo -e "${GREEN}✓ Setup complete!${NC}"
+echo ""
+echo "Next steps:"
+echo "  1. Run 'nat' to start an interactive session"
+echo "  2. Run 'nat --help' to see available options"
+echo "  3. Edit settings: nat --nat-config"
+echo ""
+echo "Documentation: https://nat-agentic.dev/docs"
